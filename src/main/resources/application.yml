@@ -1,0 +1,22 @@
+server:
+  port: 9082
+  servlet:
+    contextPath: /event-driven-api-pub2
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@localhost:27017/event-driven-api?authSource=admin
+  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+    name:
+      queue1: event-driven-api-queue1
+      queue2: event-driven-api-queue2
+      queue3: event-driven-api-queue3
+      exchange: event-driven-api-fanout
+
+  application:
+    name: event-driven-api-pub2
