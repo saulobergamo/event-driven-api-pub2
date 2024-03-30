@@ -5,7 +5,6 @@ import com.example.pub2.model.entity.Product
 import com.example.pub2.service.ProductService
 import io.swagger.v3.oas.annotations.tags.Tag
 import mu.KotlinLogging
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Tag(name = "AppMenuController")
-@RequestMapping("/event-driven-api-pub1")
+@RequestMapping("/event-driven-api-pub2")
 class AppMenuController(
     private val productService: ProductService,
 ) {
@@ -25,13 +24,12 @@ class AppMenuController(
         return productService.getAvailableProducts()
     }
 
-    @PostMapping
-    fun placeOrder(@RequestBody productRequest: List<ProductRequest>): ResponseEntity<String> {
-        productService.sendOrder(productRequest).also {
+    @PostMapping("/requestList")
+    fun sendRequestList(@RequestBody requestList: List<ProductRequest>) {
+        productService.sendRequestList(requestList).also {
             logger.info {
-                "placeOrder: request sent successfully"
+                "sendRequestList: requestList sent successfully"
             }
         }
-        return ResponseEntity.ok("placeOrder: order placed correctly")
     }
 }

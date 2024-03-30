@@ -22,29 +22,14 @@ class ProductService(
         }
     }
 
-    fun showAllProducts(): List<Product>? {
-        return productRepository.findAll().also {
-            logger.info {
-                "showAllProducts: trying to get all products"
-            }
-        }
-    }
-
-    fun sendOrder(productRequest: List<ProductRequest>) {
+    fun sendRequestList(requestList: List<ProductRequest>) {
         var count = 0
-        productRequest.forEach { product ->
-            val newProduct = Product(
-                null,
-                product.available,
-                product.description,
-                product.price,
-                product.amount
-            )
+        requestList.forEach { product ->
             count++
-            rabbitmqProducer.sendPlacedOrders(newProduct)
+            rabbitmqProducer.sendProductRequest(product)
         }.also {
             logger.info {
-                "sendOrder: sent $count products to queue"
+                "sendRequestList: sent $count products in dataBase"
             }
         }
     }

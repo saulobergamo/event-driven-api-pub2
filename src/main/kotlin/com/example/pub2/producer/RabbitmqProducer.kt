@@ -1,6 +1,6 @@
 package com.example.pub2.producer
 
-import com.example.pub2.model.entity.Product
+import com.example.pub2.model.ProductRequest
 import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KotlinLogging
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -20,15 +20,16 @@ class RabbitmqProducer(
 //    @Value("\${spring.rabbitmq.queue.routing.key}")
 //    private lateinit var routingKey : String
 
-    fun sendPlacedOrders(product: Product) {
+    fun sendProductRequest(product: ProductRequest) {
 
         val message = objectMapper.writeValueAsString(product)
         logger.info {
-            "sendPlacedOrders: trying to send order=$message"
+            "sendProductRequest: trying to send order=$message"
         }
         rabbitTemplate.convertAndSend(exchange, "", message).also {
             logger.info {
-                "sendPlacedOrders: order placed to exchange=$exchange- ${product.description}"
+                "sendProductRequest: order placed to exchange=$exchange " +
+                    "- productDescription=${product.description}"
             }
         }
     }
